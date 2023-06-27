@@ -46,7 +46,6 @@ pipeline {
         */
       }
     }
-    node {
       stage('Deploy Dev') {
      // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
             // commitId = commitId.trim()
@@ -59,7 +58,6 @@ pipeline {
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }  
       }
-    }
     
   }
   post {
