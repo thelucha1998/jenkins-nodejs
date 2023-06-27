@@ -33,6 +33,8 @@ pipeline {
       }
       steps {
         sh 'docker push eden266/node-app:v2'
+        sh 'ssh opes@10.0.10.2'
+        sh 'hostname'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         /*
         script {
