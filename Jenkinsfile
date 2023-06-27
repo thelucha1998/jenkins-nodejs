@@ -54,8 +54,7 @@ pipeline {
       environment {
         registryCredential = 'dockerhub'
       }
-      steps {
-        script{
+      
           // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
           // commitId = commitId.trim()
           withKubeConfig(credentialsId: 'kubeconfig') {
@@ -66,8 +65,7 @@ pipeline {
             // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
             sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
           }
-        }
-      }
+        
     }
     
     
