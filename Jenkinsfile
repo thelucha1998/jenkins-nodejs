@@ -46,39 +46,21 @@ pipeline {
         */
       }
     }
-     //  stage('Deploy Dev') {
-     // // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
-     //        // commitId = commitId.trim()
-     //        withKubeConfig(credentialsId: 'kubeconfig') {
-     //          withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
-     //            sh 'kubectl delete secret regcred --ignore-not-found'
-     //            sh 'kubectl create secret docker-registry regcred'
-     //          }
-     //          // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-     //          sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-     //        }  
-     //  }
-    node {
-      stage('Deploy App') {
-        steps {
-          script {
-             
-            //kubernetesDeploy(configs: "hellowhale.yml", kubeconfigId: "kubeconfig")
-            //kubernetesDeploy([kubeconfigId: 'kubeconfig' , configs: 'hellowhale.yml'])
-             
-            //kubernetesDeploy(credentialsType: 'KubeConfig', kubeConfig: [path: 'kubeconfig.yaml'], configs: '**/hellowhale.yml', enableConfigSubstitution: false )
-             
-            withKubeConfig ([credentialsId: 'kubeconfig', serverUrl: 'https://10.0.10.2:6443'])
-            {
-              sh 'kubectl delete secret regcred --ignore-not-found'
-              sh 'kubectl create secret docker-registry regcred'
+      stage('Deploy Dev') {
+        step {
+     // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+            // commitId = commitId.trim()
+            withKubeConfig(credentialsId: 'kubeconfig') {
+              withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
+                sh 'kubectl delete secret regcred --ignore-not-found'
+                sh 'kubectl create secret docker-registry regcred'
+              }
+              // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-            }
-             
-          }
+            }  
         }
       }
-    }
+    
   }
   post {
     always {
