@@ -32,7 +32,7 @@ pipeline {
         registryCredential = 'dockerhub'
       }
       steps {
-        sh 'docker push eden266/jenkins-nodejs:v2'
+        sh 'docker push eden266/node-app:v2'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         /*
         script {
