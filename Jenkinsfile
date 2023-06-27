@@ -49,7 +49,7 @@ pipeline {
       stage('Deploy Dev') {
         steps {
             withKubeConfig(credentialsId: 'kubeconfig') {
-              withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
+              withCredentials(bindings: [usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
                 sh 'kubectl delete secret regcred --ignore-not-found'
                 sh 'kubectl create secret docker-registry regcred'
               }
