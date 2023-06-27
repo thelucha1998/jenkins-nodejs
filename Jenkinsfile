@@ -47,9 +47,7 @@ pipeline {
       }
     }
       stage('Deploy Dev') {
-        step {
-     // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
-            // commitId = commitId.trim()
+        steps {
             withKubeConfig(credentialsId: 'kubeconfig') {
               withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
                 sh 'kubectl delete secret regcred --ignore-not-found'
