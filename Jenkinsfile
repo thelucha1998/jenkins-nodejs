@@ -1,110 +1,77 @@
-/*
-    An example simple CI/CD of a node web app "from git to Kubernetes"ץ
-    This pipeline assumes you Jenkins is setup with docker, kubectl, and helm for executing all steps of the CI/CD.
- */
-
-
 pipeline {
-    options {
-        // Build auto timeout
-        timeout(time: 60, unit: 'MINUTES')
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    // REGISTRY = 'gitlab-jenkins.opes.com.vn'
+    // the project name
+    // make sure your robot account have enough access to the project
+    // HARBOR_NAMESPACE = 'jenkins-harbor'
+    // docker image name
+    // APP_NAME = 'docker-example'
+    // ‘robot-test’ is the credential ID you created on the KubeSphere console
+    // HARBOR_CREDENTIAL = credentials('harbor')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t eden266/node-app:v2 .'
+        // sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs .'
+      }
     }
-
-    // Some global default variables.
-    // You can convert some to parameters to give better control of the flow.
-    environment {
-        nodePath = 'node'
-        repository = 'demo'
-        registry = 'docker-artifactory-webinar.jfrogdev.co'
-        creds = 'dockerregistrywebinar'
-        artCreds = credentials('dockerregistrywebinar')
-
-        helmRepo = 'https://artifactory-webinar.jfrogdev.co/artifactory/helm'
-        helmRelease = 'webinar-example'
-
-        dockerTag = '0.0'
-        helmChartVersion = '0.0.1'
+    stage('Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        // sh '''echo $HARBOR_CREDENTIAL_PSW | docker login $REGISTRY -u 'admin' --password-stdin'''
+      }
     }
-
-    // In this example, all is built and run from the master
-    agent { node { label 'master' } }
-
-    // Pipeline stages
-    stages {
-
+    stage('Push') {
+      environment {
+        registryCredential = 'dockerhub'
+      }
+      steps {
+        sh 'docker push eden266/jenkins-nodejs:v2'
+        // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         /*
-        Step 1
-
-        Build the Docker image of the node web app and run a local test (curl)
+        script {
+          
+          docker.withRegistry( 'https://gitlab-jenkins.opes.com.vn', registryCredential ) {
+            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
+          }
+        }
         */
-        stage('Docker build') {
-            steps {
-                script {
-                    echo "========== Git clone =========="
-                    git branch: 'master',
-                            url: 'git@github.com:eldada/node-git-to-k8s.git'
-
-                    echo "========== Docker build =========="
-                    def fullImage = "${registry}/${repository}:${dockerTag}.${env.BUILD_NUMBER}"
-
-                    def dockerImage = docker.build(fullImage, "--build-arg NPM_AUTH=${NPM_AUTH} .")
-
-                    echo "========== Test Docker image =========="
-                    // Test Docker image
-                    docker.image(fullImage).withRun('--name node-test -p 8888:8080') { c ->
-                        sh 'sleep 3'
-                        sh 'curl -s http://localhost:8888'
-                    }
-
-                    echo "========== Docker push =========="
-                    echo "Pushing to ${registry}"
-                    docker.withRegistry( "http://${registry}", creds ) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-
-        /*
-        Step 2
-
-        Package helm chart and publish to Artifactory
-         */
-        stage('Helm package') {
-            steps {
-                script {
-                    echo "========== Helm package =========="
-                    sh "helm package demo"
-
-                    echo "========== Publish helm chart =========="
-                    sh "curl -u${artCreds} -T ./demo-${helmChartVersion}.tgz '${helmRepo}/demo-${helmChartVersion}.tgz'"
-                }
-            }
-        }
-
-        /*
-         Step 3
-
-         Deploy to Kubernetes and run test
-
-         - Assumes kubectl and helm client already configured
-         - Assumes a private 'helm' repository is already configured in Artifactory
-          */
-        stage('Deploy') {
-            steps {
-                script {
-                    echo "========== Helm repo add =========="
-                    sh "helm repo add --username ${artCreds_USR} --password ${artCreds_PSW} webinar ${helmRepo}"
-
-                    echo "========== Deploy =========="
-                    sh "helm upgrade --install ${helmRelease} --set image.tag=${dockerTag}.${env.BUILD_NUMBER} webinar/demo"
-
-                    echo "========== Status =========="
-                    sh 'sleep 10'
-                    sh "helm status ${helmRelease}"
-                }
-            }
-        }
+      }
     }
+    /*
+    stage('Deploy Dev') {
+      when {
+        branch 'main'
+      }
+      environment {
+        registryCredential = 'harbor'
+      }
+      steps {
+        script{
+          commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+          commitId = commitId.trim()
+          withKubeConfig(credentialsId: 'kubeconfig') {
+            withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'HARBOR_CREDENTIAL_USER', passwordVariable: 'HARBOR_CREDENTIAL_PSW')]) {
+              sh 'kubectl delete secret regcred --namespace=jenkins-nodejs --ignore-not-found'
+              sh 'kubectl create secret docker-registry regcred --namespace=jenkins-nodejs --docker-server=https://gitlab-jenkins.opes.com.vn --docker-username=$HARBOR_CREDENTIAL_USER --docker-password=$HARBOR_CREDENTIAL_PSW --docker-email=email@example.com'
+            }
+            sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
+          }
+        }
+      }
+    }
+    */
+    
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
+  }
 }
-
