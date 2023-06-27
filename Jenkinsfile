@@ -68,7 +68,7 @@ pipeline {
              
             //kubernetesDeploy(credentialsType: 'KubeConfig', kubeConfig: [path: 'kubeconfig.yaml'], configs: '**/hellowhale.yml', enableConfigSubstitution: false )
              
-            withKubeConfig ([credentialsId: 'kubeconfig'])
+            withKubeConfig ([credentialsId: 'kubeconfig', serverUrl: 'https://10.0.10.2:6443'])
             {
               sh 'kubectl delete secret regcred --ignore-not-found'
               sh 'kubectl create secret docker-registry regcred'
