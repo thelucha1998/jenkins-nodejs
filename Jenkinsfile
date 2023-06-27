@@ -58,7 +58,25 @@ pipeline {
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }  
       }
-    
+    stage('Deploy App') {
+      steps {
+        script {
+           
+          //kubernetesDeploy(configs: "hellowhale.yml", kubeconfigId: "kubeconfig")
+          //kubernetesDeploy([kubeconfigId: 'kubeconfig' , configs: 'hellowhale.yml'])
+           
+          //kubernetesDeploy(credentialsType: 'KubeConfig', kubeConfig: [path: 'kubeconfig.yaml'], configs: '**/hellowhale.yml', enableConfigSubstitution: false )
+           
+          withKubeConfig (credentialsId: 'kubeconfig')
+          {
+            sh 'kubectl delete secret regcred --ignore-not-found'
+            sh 'kubectl create secret docker-registry regcred'
+            sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+          }
+           
+        }
+      }
+    }
   }
   post {
     always {
