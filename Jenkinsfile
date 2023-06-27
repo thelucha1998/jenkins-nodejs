@@ -46,18 +46,18 @@ pipeline {
         */
       }
     }
-      stage('Deploy Dev') {
-     // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
-            // commitId = commitId.trim()
-            withKubeConfig(credentialsId: 'kubeconfig') {
-              withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
-                sh 'kubectl delete secret regcred --ignore-not-found'
-                sh 'kubectl create secret docker-registry regcred'
-              }
-              // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-              sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-            }  
-      }
+     //  stage('Deploy Dev') {
+     // // commitId = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+     //        // commitId = commitId.trim()
+     //        withKubeConfig(credentialsId: 'kubeconfig') {
+     //          withCredentials(bindings: [usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
+     //            sh 'kubectl delete secret regcred --ignore-not-found'
+     //            sh 'kubectl create secret docker-registry regcred'
+     //          }
+     //          // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
+     //          sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+     //        }  
+     //  }
     node {
       stage('Deploy App') {
         steps {
