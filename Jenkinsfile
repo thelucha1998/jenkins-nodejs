@@ -46,21 +46,25 @@ pipeline {
         */
       }
     }
+    node("deploy)
       stage('Deploy Dev') {
-        steps {
-            // withKubeConfig(credentialsId: 'kubeconfig') {
-          script {
+        // steps {
+        //     // withKubeConfig(credentialsId: 'kubeconfig') {
+        //   script {
               // withCredentials(bindings: [usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
               //   sh 'kubectl delete secret regcred --ignore-not-found'
               //   sh 'kubectl create secret docker-registry regcred'
               // }
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-            withCredentials([file(credentialsId: 'secret', variable: 'kubeconfig')]) {
+            withKubeConfig([
+              credentialsId: 'kubeconfig', 
+              serverUrl: 'https://10.0.10.2:6443')
+            ]) {
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             // } 
             }
-          }
-        }
+        //   }
+        // }
       }
     
   }
