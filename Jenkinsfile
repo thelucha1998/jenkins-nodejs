@@ -46,7 +46,7 @@ pipeline {
         */
       }
     }
-    node("deploy)
+    node("deploy) {
       stage('Deploy Dev') {
         // steps {
         //     // withKubeConfig(credentialsId: 'kubeconfig') {
@@ -66,7 +66,7 @@ pipeline {
         //   }
         // }
       }
-    
+         }
   }
   post {
     always {
