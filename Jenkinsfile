@@ -69,16 +69,14 @@ pipeline {
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
         steps{
             sshagent(credentials : ['my-ssh-key']) {
-                sh 'ssh -o StrictHostKeyChecking=no opes@10.0.10.2'
+                sh 'ssh -o StrictHostKeyChecking=no opes@10.0.10.2 uname -a'
                 // sh 'ssh -v opes@10.0.10.2'
                 // sh 'scp ./test opes@10.0.10.2:/home/opes'
-                sh 'hostname'
-                sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+                // sh 'hostname'
+                // sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }
         }
-        // steps {   
-        //       sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-        //  }  
+         
         
       }
       
