@@ -47,7 +47,7 @@ pipeline {
       }
     }
     
-    node {
+    node ("ssh") {
       def remote = [:]
       remote.name = 'test-kmc01'
       remote.host = '10.0.10.2'
