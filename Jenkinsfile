@@ -72,13 +72,13 @@ pipeline {
                 sh 'ssh -o StrictHostKeyChecking=no opes@10.0.10.2'
                 sh 'ssh -v opes@10.0.10.2'
                 // sh 'scp ./source/filename user@hostname.com:/remotehost/target'
+                sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }
         }
-        steps {   
-              sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-         }  
-        //   }
-        // }
+        // steps {   
+        //       sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+        //  }  
+        
       }
       
   }
