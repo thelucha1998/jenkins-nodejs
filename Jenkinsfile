@@ -47,36 +47,34 @@ pipeline {
       }
     }
     
-    // node ("ssh") {
-    //   def remote = [:]
-    //   remote.name = 'test-kmc01'
-    //   remote.host = '10.0.10.2'
-    //   remote.user = 'opes'
-    //   remote.password = 'Hanoi@123'
-    //   remote.allowAnyHosts = true
-    //   stage('Remote SSH') {
-    //     sshCommand remote: remote, command: "ls -lrt"
-    //     sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
-    //   }
-    // }
+    node ("ssh") {
+      def remote = [:]
+      remote.name = 'test-kmc01'
+      remote.host = '10.0.10.2'
+      remote.user = 'opes'
+      remote.password = 'Hanoi@123'
+      remote.allowAnyHosts = true
+      stage('Remote SSH') {
+        sshCommand remote: remote, command: "ls -lrt"
+        sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
+      }
+    }
       stage('Deploy Dev') {
-        def remote = [:]
-        remote.name = 'test-kmc01'
-        remote.host = '10.0.10.2'
-        remote.user = 'opes'
-        remote.password = 'Hanoi@123'
-        remote.allowAnyHosts = true
-        stage('Remote SSH') {
-          sshCommand remote: remote, command: "ls -lrt"
-          sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
-        }
+        
         //   script {
               // withCredentials(bindings: [usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
               //   sh 'kubectl delete secret regcred --ignore-not-found'
               //   sh 'kubectl create secret docker-registry regcred'
               // }
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-         steps {   
+        steps{
+            sshagent(credentials : ['my-ssh-key']) {
+                sh 'ssh -o StrictHostKeyChecking=no opes@10.0.10.2'
+                sh 'ssh -v opes@10.0.10.2'
+                // sh 'scp ./source/filename user@hostname.com:/remotehost/target'
+            }
+        }
+        steps {   
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
          }  
         //   }
