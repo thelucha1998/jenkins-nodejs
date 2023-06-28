@@ -67,9 +67,9 @@ pipeline {
               //   sh 'kubectl create secret docker-registry regcred'
               // }
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-            
+         steps {   
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-            
+         }  
         //   }
         // }
       }
