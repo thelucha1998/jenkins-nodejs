@@ -58,7 +58,7 @@ pipeline {
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
             withKubeConfig([
               credentialsId: 'kubeconfig', 
-              serverUrl: 'https://10.0.10.2:6443')
+              serverUrl: 'https://10.0.10.2:6443'
             ]) {
               sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             // } 
