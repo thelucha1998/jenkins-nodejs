@@ -74,7 +74,7 @@ pipeline {
                 // sh 'ssh -v opes@10.0.10.2'
                 // sh 'scp ./test opes@10.0.10.2:/home/opes'
                 // sh 'hostname'
-                // sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+                sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }
           }
         }
