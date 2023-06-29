@@ -70,12 +70,10 @@ pipeline {
         steps{
           script {
             sshagent(credentials : ['my-ssh-key']) {
-                sh 'ssh -o StrictHostKeyChecking=no -i my-ssh-key opes@10.0.10.2 "hostname"'
+                sh 'ssh -o StrictHostKeyChecking=no -i my-ssh-key opes@10.0.10.2 "hostname && cd node-git-to-k8s && helm upgrade --install jenkins-nodejs ./node-app-chart"'
                 // sh 'ssh -v opes@10.0.10.2'
                 // sh 'scp ./test opes@10.0.10.2:/home/opes'
-                sh 'whoami'
-                sh 'ls'
-                sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
+                // sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
             }
           }
         }
