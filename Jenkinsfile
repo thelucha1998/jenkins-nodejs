@@ -22,6 +22,30 @@ pipeline {
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
+    stage('Code Quality Check via SonarQube') {
+
+    steps {
+
+     script {
+
+     def scannerHome = tool 'sonarqube';
+
+       withSonarQubeEnv("sonarqube") {
+
+       sh "${tool("sonarqube")}/bin/sonar-scanner \
+       -Dsonar.projectKey=test-node-js \
+       -Dsonar.sources=. \
+       -Dsonar.css.node=. \
+       -Dsonar.host.url=http://172.25.166.55/ \
+       -Dsonar.login=squ_84b7d39a39fc2079de01a3592e1fd25fdbbf6d8d"
+
+           }
+
+          }
+
+       }
+
+  }
     stage('Build') {
       steps {
         sh 'docker build -t eden266/node-app:v2 .'
