@@ -31,14 +31,14 @@ pipeline {
 
      def scannerHome = tool 'SonarQube-Scanner';
 
-       withSonarQubeEnv("SonarQube") {
+       withSonarQubeEnv("sonarqube-container") {
        // sh 'sonar-scanner'
-       sh "${tool("SonarQube-Scanner")} -X \
+       sh '''${tool("SonarQube-Scanner")} -X \
        -Dsonar.projectKey=test-node-js \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000/ \
-       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99"
+       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99'''
 
            }
 
