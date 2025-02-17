@@ -37,7 +37,7 @@ pipeline {
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000/ \
-       -Dsonar.login=squ_84b7d39a39fc2079de01a3592e1fd25fdbbf6d8d"
+       -Dsonar.login=squ_77f8bfed2b092216ca0392961143ef1ee1419df4"
 
            }
 
