@@ -22,7 +22,7 @@ pipeline {
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
-  /* stage('Code Quality Check via SonarQube') {
+   stage('Code Quality Check via SonarQube') {
 
     steps {
 
@@ -37,7 +37,7 @@ pipeline {
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000/ \
-       -Dsonar.login=squ_77f8bfed2b092216ca0392961143ef1ee1419df4"
+       -Dsonar.login=squ_d8929192e7da738e60406f0c047901708eccfac1"
 
            }
 
@@ -46,7 +46,7 @@ pipeline {
        }
 
   }
-  */
+  
   
   /*  stage('Code Analysis') {
             environment {
