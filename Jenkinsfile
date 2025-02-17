@@ -32,7 +32,7 @@ pipeline {
 
        withSonarQubeEnv("SonarQube") {
        // sh 'sonar-scanner'
-       sh "${tool("SonarQube-Scanner")}/bin/sonar-scanner \
+       sh "${tool("SonarQube-Scanner")} \
        -Dsonar.projectKey=test-node-js \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
