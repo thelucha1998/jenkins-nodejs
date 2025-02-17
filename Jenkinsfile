@@ -61,7 +61,7 @@ pipeline {
                         -Dsonar.projectKey=test-node-js \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                        -Dsonar.login=<YOUR_SONARQUBE_TOKEN>
+                        -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99
                     '''
                 }
             }
