@@ -28,11 +28,11 @@ pipeline {
 
      script {
 
-     def scannerHome = tool 'sonarqube';
+     def scannerHome = tool 'Sonar';
 
-       withSonarQubeEnv("sonarqube") {
+       withSonarQubeEnv("Sonar") {
 
-       sh "${tool("sonarqube")}/bin/sonar-scanner \
+       sh "${tool("Sonar")}/bin/sonar-scanner \
        -Dsonar.projectKey=test-node-js \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
