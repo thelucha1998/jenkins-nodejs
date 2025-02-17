@@ -22,7 +22,7 @@ pipeline {
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
-    /*
+    
    stage('Code Quality Check via SonarQube') {
 
     steps {
@@ -38,7 +38,7 @@ pipeline {
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000/ \
-       -Dsonar.login=squ_d8929192e7da738e60406f0c047901708eccfac1"
+       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99"
 
            }
 
@@ -47,9 +47,9 @@ pipeline {
        }
 
   }
-    */
+    
   
-  
+  /*
   stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube-container') {
@@ -66,6 +66,7 @@ pipeline {
                 }
             }
         }
+        */
     stage('Build') {
       steps {
         sh 'docker build -t eden266/node-app:v3 .'
