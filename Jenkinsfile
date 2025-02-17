@@ -15,6 +15,13 @@ pipeline {
     // HARBOR_CREDENTIAL = credentials('harbor')
   }
   stages {
+    stage("Code Checkout from GitHub") {
+      steps {
+       git branch: 'main',
+        credentialsId: 'github',
+        url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
+      }
+   }
     stage('Build') {
       steps {
         sh 'docker build -t eden266/node-app:v2 .'
@@ -33,8 +40,8 @@ pipeline {
       }
       steps {
         sh 'docker push eden266/node-app:v2'
-        sh 'ssh opes@10.0.10.2'
-        sh 'hostname'
+        // sh 'ssh opes@10.0.10.2'
+        // sh 'hostname'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
         /*
         script {
@@ -59,7 +66,7 @@ pipeline {
     //     sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
     //   }
     // }
-      stage('Deploy Dev') {
+      //stage('Deploy Dev') {
         
         //   script {
               // withCredentials(bindings: [usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
@@ -67,19 +74,19 @@ pipeline {
               //   sh 'kubectl create secret docker-registry regcred'
               // }
               // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-        steps{
-          script {
-            sshagent(credentials : ['my-ssh-key']) {
-                sh 'ssh -o StrictHostKeyChecking=no -i my-ssh-key opes@10.0.10.2 "hostname && cd node-git-to-k8s && helm upgrade --install jenkins-nodejs-v5 ./node-app-chart"'
+        //steps{
+        // script {
+        //    sshagent(credentials : ['my-ssh-key']) {
+        //        sh 'ssh -o StrictHostKeyChecking=no -i my-ssh-key opes@10.0.10.2 "hostname && cd node-git-to-k8s && helm upgrade --install jenkins-nodejs-v5 ./node-app-chart"'
                 // sh 'ssh -v opes@10.0.10.2'
                 // sh 'scp ./test opes@10.0.10.2:/home/opes'
                 // sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-            }
-          }
-        }
+        //    }
+        //  }
+        //}
          
         
-      }
+      //}
       
   }
   post {
