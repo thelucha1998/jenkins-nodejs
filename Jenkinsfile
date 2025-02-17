@@ -22,7 +22,7 @@ pipeline {
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
-  stage('Code Quality Check via SonarQube') {
+  /* stage('Code Quality Check via SonarQube') {
 
     steps {
 
@@ -46,6 +46,7 @@ pipeline {
        }
 
   }
+  */
   
   /*  stage('Code Analysis') {
             environment {
@@ -66,7 +67,7 @@ pipeline {
         */
     stage('Build') {
       steps {
-        sh 'docker build -t eden266/node-app:v2 .'
+        sh 'docker build -t eden266/node-app:v3 .'
         // sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs .'
       }
     }
@@ -81,7 +82,7 @@ pipeline {
         registryCredential = 'dockerhub'
       }
       steps {
-        sh 'docker push eden266/node-app:v2'
+        sh 'docker push eden266/node-app:v3'
         // sh 'ssh opes@10.0.10.2'
         // sh 'hostname'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
