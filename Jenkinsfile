@@ -49,7 +49,7 @@ pipeline {
   */
     stage('Code Analysis') {
             environment {
-                scannerHome = tool 'Sonar'
+                scannerHome = tool 'SonarQube Scanner 2.18'
             }
             steps {
                 script {
