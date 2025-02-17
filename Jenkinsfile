@@ -52,7 +52,7 @@ pipeline {
   
   stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('sonarqube-container') {
                     script {
                         echo "SonarQube URL: ${env.SONAR_HOST_URL}"
                         echo "Sonar Scanner Home: ${env.SONAR_SCANNER_HOME}"
