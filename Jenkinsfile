@@ -56,6 +56,9 @@ pipeline {
         }
       }
     }
+    
+  }
+    stage('Check SonarQube Quality Gate') {
     steps {
       script {
         def qualityGate = waitForQualityGate()
@@ -73,7 +76,6 @@ pipeline {
         }
     }
   }
-    
     stage('Build') {
       steps {
         sh 'docker build -t eden266/node-app:${COMMIT_HASH} .'
