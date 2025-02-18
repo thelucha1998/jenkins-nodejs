@@ -5,9 +5,9 @@ pipeline {
   }
   triggers {
     githubPush()  // Lắng nghe sự kiện push từ GitHub
-    githubPullRequest {
-      events ['opened', 'reopened', 'synchronize', 'closed'] // các sự kiện PR
-    }
+    //githubPullRequest {
+     // events ['opened', 'reopened', 'synchronize', 'closed'] // các sự kiện PR
+    //}
   }
   
   environment {
