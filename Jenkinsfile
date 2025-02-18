@@ -37,7 +37,7 @@ pipeline {
        withSonarQubeEnv("sonarqube-container") {
        // sh 'sonar-scanner'
        sh "${tool("SonarQube-Scanner")}/sonar-scanner -X \
-       -Dsonar.projectKey=test-node-js \
+       -Dsonar.projectKey=test-node-js1 \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000 \
