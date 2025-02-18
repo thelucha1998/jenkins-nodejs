@@ -3,6 +3,9 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
+  triggers {
+    githubPush()  // Lắng nghe sự kiện push từ GitHub
+  }
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
