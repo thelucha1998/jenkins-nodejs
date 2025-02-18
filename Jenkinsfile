@@ -3,6 +3,9 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
+  triggers {
+    githubPush()  // Lắng nghe sự kiện push từ GitHub
+  }
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
@@ -17,12 +20,13 @@ pipeline {
   stages {
     stage("Code Checkout from GitHub") {
       steps {
-       git branch: 'main',
-        credentialsId: 'github',
+       git branch: 'jenkins',
+        credentialsId: 'github-jenkins',
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
-  stage('Code Quality Check via SonarQube') {
+    
+   stage('Code Quality Check via SonarQube') {
 
     steps {
 
@@ -30,36 +34,34 @@ pipeline {
 
      def scannerHome = tool 'SonarQube-Scanner';
 
-       withSonarQubeEnv("SonarQube") {
+       withSonarQubeEnv("sonarqube-container") {
        // sh 'sonar-scanner'
-       sh "${tool("SonarQube-Scanner")} \
-       -Dsonar.projectKey=test-node-js \
+       sh "${tool("SonarQube-Scanner")}/sonar-scanner -X \
+       -Dsonar.projectKey=test-node-js1 \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
-       -Dsonar.host.url=http://172.25.166.55:9000/ \
-       -Dsonar.login=squ_77f8bfed2b092216ca0392961143ef1ee1419df4"
-
-           }
-
-          }
-
-       }
-
+       -Dsonar.host.url=http://172.25.166.55:9000 \
+       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99"
+        }
+      }
+    }
   }
+    
   
-  /*  stage('Code Analysis') {
-            environment {
-                scannerHome = tool 'SonarQube-Scanner'
-            }
+  /*
+  stage('SonarQube Analysis') {
             steps {
-                script {
-                    withSonarQubeEnv('Sonar') {
-                        sh "${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=test-node-js \
-                            -Dsonar.projectName=test-node-js \
-                            // -Dsonar.projectVersion=<project-version> \
-                            -Dsonar.sources=http://172.25.166.55:9000"
+                withSonarQubeEnv('sonarqube-container') {
+                    script {
+                        echo "SonarQube URL: ${env.SONAR_HOST_URL}"
+                        echo "Sonar Scanner Home: ${env.SONAR_SCANNER_HOME}"
                     }
+                    sh '''$SONAR_SCANNER_HOME/sonar-scanner \
+                        -Dsonar.projectKey=test-node-js \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                        -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99
+                    '''
                 }
             }
         }
