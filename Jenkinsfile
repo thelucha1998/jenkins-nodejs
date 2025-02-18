@@ -12,6 +12,7 @@ pipeline {
   
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    SONARQUBE_TOKEN = credentials('sonar')
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
     // the project name
     // make sure your robot account have enough access to the project
@@ -51,7 +52,7 @@ pipeline {
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000 \
-       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99 \
+       -Dsonar.login=${SONARQUBE_TOKEN} \
        -Dsonar.qualitygate.wait=true"
         }
       }
