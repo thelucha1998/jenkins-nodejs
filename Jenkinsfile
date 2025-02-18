@@ -51,9 +51,26 @@ pipeline {
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=http://172.25.166.55:9000 \
-       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99"
+       -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99 \
+       -Dsonar.qualitygate.wait=true"
         }
       }
+    }
+    steps {
+      script {
+        def qualityGate = waitForQualityGate()
+        if (qualityGate.status != 'OK') {
+            error "Quality Gate failed: ${qualityGate.status}"
+        }
+      }
+    }
+     post {
+        success {
+            echo "✅ Code passed SonarQube Quality Gate!"
+        }
+        failure {
+            echo "❌ Quality Gate failed! Check SonarQube for details."
+        }
     }
   }
     
