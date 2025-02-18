@@ -29,7 +29,13 @@ pipeline {
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
-    
+   stage('Get Commit Info') {
+      steps {
+        script {
+          env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        }
+      }
+    }
    stage('Code Quality Check via SonarQube') {
 
     steps {
@@ -51,28 +57,9 @@ pipeline {
     }
   }
     
-  
-  /*
-  stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonarqube-container') {
-                    script {
-                        echo "SonarQube URL: ${env.SONAR_HOST_URL}"
-                        echo "Sonar Scanner Home: ${env.SONAR_SCANNER_HOME}"
-                    }
-                    sh '''$SONAR_SCANNER_HOME/sonar-scanner \
-                        -Dsonar.projectKey=test-node-js \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                        -Dsonar.login=sqa_e7921bbf2d82e6486f840f6894a53eb5a8a74d99
-                    '''
-                }
-            }
-        }
-        */
     stage('Build') {
       steps {
-        sh 'docker build -t eden266/node-app:v4 .'
+        sh 'docker build -t eden266/node-app:${COMMIT_HASH} .'
         // sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs .'
       }
     }
@@ -87,7 +74,7 @@ pipeline {
         registryCredential = 'dockerhub'
       }
       steps {
-        sh 'docker push eden266/node-app:v4'
+        sh 'docker push eden266/node-app:${COMMIT_HASH}'
         // sh 'ssh opes@10.0.10.2'
         // sh 'hostname'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
