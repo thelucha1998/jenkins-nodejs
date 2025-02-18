@@ -68,7 +68,7 @@ pipeline {
         */
     stage('Build') {
       steps {
-        sh 'docker build -t eden266/node-app:v3 .'
+        sh 'docker build -t eden266/node-app:v4 .'
         // sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs .'
       }
     }
@@ -83,7 +83,7 @@ pipeline {
         registryCredential = 'dockerhub'
       }
       steps {
-        sh 'docker push eden266/node-app:v3'
+        sh 'docker push eden266/node-app:v4'
         // sh 'ssh opes@10.0.10.2'
         // sh 'hostname'
         // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
