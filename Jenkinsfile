@@ -21,7 +21,7 @@ pipeline {
     stage("Code Checkout from GitHub") {
       steps {
        git branch: 'jenkins',
-        credentialsId: 'github',
+        credentialsId: 'github-jenkins',
         url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
       }
    }
