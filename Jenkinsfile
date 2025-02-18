@@ -32,7 +32,7 @@ pipeline {
    stage('Get Commit Info') {
       steps {
         script {
-          env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+          env.COMMIT_HASH = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
         }
       }
     }
