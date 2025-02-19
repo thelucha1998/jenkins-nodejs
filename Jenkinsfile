@@ -149,12 +149,12 @@ pipeline {
       sh 'docker logout'
     }
     success {
-        emailext subject: " ✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        emailext subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: "Good job! The build ${env.JOB_NAME} #${env.BUILD_NUMBER} has passed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
     failure {
-        emailext subject: " ❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        emailext subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: "Oops! The build ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
