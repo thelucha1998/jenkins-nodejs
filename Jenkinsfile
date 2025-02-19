@@ -36,7 +36,7 @@ pipeline {
       steps {
         script {
           env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-          env.GIT_REPONAME = sh(script: "basename -s .git `git remote get-url origin jenkins`", returnStdout: true).trim()
+          env.GIT_REPONAME = sh(script: "basename -s .git `git remote get-url origin`", returnStdout: true).trim()
         }
       }
     }
