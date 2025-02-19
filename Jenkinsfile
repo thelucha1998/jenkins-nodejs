@@ -29,14 +29,14 @@ pipeline {
       steps {
        git branch: 'jenkins',
         credentialsId: 'github-jenkins',
-        url: 'https://github.com/thelucha1998/jenkins-nodejs-project.git'
+        url: 'https://github.com/thelucha1998/jenkins-nodejs.git'
       }
    }
    stage('Get Commit Info') {
       steps {
         script {
           env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-          env.GIT_REPONAME = sh(script: "basename -s .git `git remote get-url origin`", returnStdout: true).trim()
+          env.GIT_REPONAME = sh(script: "basename -s .git `git remote get-url origin jenkins`", returnStdout: true).trim()
         }
       }
     }
@@ -74,13 +74,13 @@ pipeline {
      post {
         success {
           emailext subject: "✅ Code passed SonarQube Quality Gate!",
-            body: "View details: ${SONARQUBE_URL}/dashboard?id=${SONARQUBE_PROJECT}",
+            body: "View details: ${SONARQUBE_URL}/dashboard?id=${GIT_REPONAME}",
             to: 'hatheluctb1998@gmail.com'
             echo "✅ Code passed SonarQube Quality Gate!"
         }
         failure {
           emailext subject: "❌ Quality Gate failed! Check SonarQube for details.",
-            body: "View details: ${SONARQUBE_URL}/dashboard?id=${SONARQUBE_PROJECT}",
+            body: "View details: ${SONARQUBE_URL}/dashboard?id=${GIT_REPONAME}",
             to: 'hatheluctb1998@gmail.com'
             echo "❌ Quality Gate failed! Check SonarQube for details."
         }
