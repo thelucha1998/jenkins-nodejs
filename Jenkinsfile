@@ -13,6 +13,8 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     SONARQUBE_TOKEN = credentials('sonar')
+    SONARQUBE_URL = 'http://172.25.166.55:9000'
+    SONARQUBE_PROJECT = 'test-node-js1'
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
     // the project name
     // make sure your robot account have enough access to the project
@@ -48,10 +50,10 @@ pipeline {
        withSonarQubeEnv("sonarqube-container") {
        // sh 'sonar-scanner'
        sh "${tool("SonarQube-Scanner")}/sonar-scanner -X \
-       -Dsonar.projectKey=test-node-js1 \
+       -Dsonar.projectKey=${SONARQUBE_PROJECT} \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
-       -Dsonar.host.url=http://172.25.166.55:9000 \
+       -Dsonar.host.url=${SONARQUBE_URL} \
        -Dsonar.login=${SONARQUBE_TOKEN} \
        -Dsonar.qualitygate.wait=true"
         }
@@ -70,9 +72,15 @@ pipeline {
     }
      post {
         success {
+          emailext subject: "✅ Code passed SonarQube Quality Gate!",
+            body: "View details: ${SONARQUBE_URL}/dashboard?id=${SONARQUBE_PROJECT}",
+            to: 'hatheluctb1998@gmail.com'
             echo "✅ Code passed SonarQube Quality Gate!"
         }
         failure {
+          emailext subject: "❌ Quality Gate failed! Check SonarQube for details.",
+            body: "View details: ${SONARQUBE_URL}/dashboard?id=${SONARQUBE_PROJECT}",
+            to: 'hatheluctb1998@gmail.com'
             echo "❌ Quality Gate failed! Check SonarQube for details."
         }
     }
@@ -149,12 +157,12 @@ pipeline {
       sh 'docker logout'
     }
     success {
-        emailext subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        emailext subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER} #${COMMIT_HASH}",
             body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has passed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
     failure {
-        emailext subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        emailext subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} #${COMMIT_HASH}",
             body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
