@@ -36,6 +36,7 @@ pipeline {
       steps {
         script {
           env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+          env.GIT_REPONAME = sh(script: "basename -s .git `git remote get-url origin`", returnStdout: true).trim()
         }
       }
     }
@@ -50,7 +51,7 @@ pipeline {
        withSonarQubeEnv("sonarqube-container") {
        // sh 'sonar-scanner'
        sh "${tool("SonarQube-Scanner")}/sonar-scanner -X \
-       -Dsonar.projectKey=${SONARQUBE_PROJECT} \
+       -Dsonar.projectKey=${GIT_REPONAME} \
        -Dsonar.sources=. \
        -Dsonar.css.node=. \
        -Dsonar.host.url=${SONARQUBE_URL} \
