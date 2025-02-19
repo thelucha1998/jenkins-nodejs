@@ -1,0 +1,21 @@
+Cài đặt Jenkins trên Ubuntu
+1. Cài đặt Java 17
+sudo apt update
+sudo apt install openjdk-17-jdk -y
+java -version
+2. Thêm Jenkins repository
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+/etc/apt/sources.list.d/jenkins.list > /dev/null  
+3. Cài đặt Jenkins
+sudo apt update
+sudo apt install jenkins -y
+sudo systemctl status jenkins
+sudo systemctl enable jenkins (Jenkins tự động start mỗi khi khởi động server)
+4. Cấu hình ufw
+sudo ufw allow 8080
+sudo ufw enable
+sudo ufw status
+5. Thiết lập Jenkins
+http://ip_address_or_domain:8080
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword (đường dẫn chứa password unlock jenkins)
