@@ -33,7 +33,7 @@ pipeline {
    stage('Get Commit Info') {
       steps {
         script {
-          env.COMMIT_HASH = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+          env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         }
       }
     }
@@ -150,12 +150,12 @@ pipeline {
     }
     success {
         emailext subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: "CommitID: ${COMMIT_HASH}\n The build ${env.JOB_NAME} #${env.BUILD_NUMBER} has passed.\nCheck console output: ${env.BUILD_URL}",
+            body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has passed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
     failure {
         emailext subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: "CommitID: ${COMMIT_HASH}\n The build ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed.\nCheck console output: ${env.BUILD_URL}",
+            body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed.\nCheck console output: ${env.BUILD_URL}",
             to: 'hatheluctb1998@gmail.com'
     }
   }
