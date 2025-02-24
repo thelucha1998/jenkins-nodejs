@@ -13,7 +13,7 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     SONARQUBE_TOKEN = credentials('sonar')
-    SONARQUBE_URL = 'http://172.25.166.55:9000'
+    SONARQUBE_URL = 'http://116.100.88.114:9000/'
     SONARQUBE_PROJECT = 'test-node-js1'
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
     // the project name
