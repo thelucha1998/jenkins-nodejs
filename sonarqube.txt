@@ -38,7 +38,7 @@ http://<ip_addr>:9000
 - Cấu hình Sonarqube Scanner:
   Cài đặt Scanner:
   sudo apt update && sudo apt install -y openjdk-17-jdk
-  wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-5.0.1.3006-linux.zip
+  wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
   sudo apt install unzip -y
   unzip sonar-scanner-5.0.1.3006-linux.zip
   sudo mv sonar-scanner-5.0.1.3006-linux /opt/sonar-scanner
