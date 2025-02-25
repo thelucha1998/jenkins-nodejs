@@ -75,13 +75,13 @@ pipeline {
         success {
           emailext subject: "✅ Code passed SonarQube Quality Gate!",
             body: "View details: ${SONARQUBE_URL}/dashboard?id=${GIT_REPONAME}",
-            to: 'hatheluctb1998@gmail.com'
+            to: 'hatheluctb1998@gmail.com, lucht@apec.com.vn'
             echo "✅ Code passed SonarQube Quality Gate!"
         }
         failure {
           emailext subject: "❌ Quality Gate failed! Check SonarQube for details.",
             body: "View details: ${SONARQUBE_URL}/dashboard?id=${GIT_REPONAME}",
-            to: 'hatheluctb1998@gmail.com'
+            to: 'hatheluctb1998@gmail.com, lucht@apec.com.vn'
             echo "❌ Quality Gate failed! Check SonarQube for details."
         }
     }
@@ -160,12 +160,12 @@ pipeline {
     success {
         emailext subject: "✅ Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER} #${COMMIT_HASH}",
             body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has passed.\nCheck console output: ${env.BUILD_URL}",
-            to: 'hatheluctb1998@gmail.com'
+            to: 'hatheluctb1998@gmail.com, lucht@apec.com.vn'
     }
     failure {
         emailext subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} #${COMMIT_HASH}",
             body: "CommitID: ${COMMIT_HASH}\nThe build ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed.\nCheck console output: ${env.BUILD_URL}",
-            to: 'hatheluctb1998@gmail.com'
+            to: 'hatheluctb1998@gmail.com, lucht@apec.com.vn'
     }
   }
 }
