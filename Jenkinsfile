@@ -52,7 +52,7 @@ pipeline {
        // sh 'sonar-scanner'
         withCredentials([string(credentialsId: 'sonar', variable: 'SONARQUBE_TOKEN')]) {
        sh ''' 
-                        ${tool("SonarQube-Scanner")}/sonar-scanner -X \
+                         ${scannerHome}/sonar-scanner -X \
                         -Dsonar.projectKey=$GIT_REPONAME \
                         -Dsonar.sources=. \
                         -Dsonar.css.node=. \
