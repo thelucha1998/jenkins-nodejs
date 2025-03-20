@@ -126,8 +126,6 @@ pipeline {
                 script {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh """
-                            // kubectl set image deployment/${IMAGE_NAME} ${IMAGE_NAME}=${IMAGE_TAG} -n ${NAMESPACE}
-                            // kubectl rollout status deployment/${IMAGE_NAME} -n ${NAMESPACE}
                             helm upgrade --install ${KUBERNETES_RELEASE} ./jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
                         """
                     }
