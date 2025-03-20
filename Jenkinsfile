@@ -121,14 +121,28 @@ pipeline {
         */
       }
     }
+    /*
     stage('Deploy to Kubernetes') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh """
-                            helm upgrade --install ${KUBERNETES_RELEASE} ./jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
+                            helm upgrade --install ${KUBERNETES_RELEASE} /home/admins/lucht/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
                         """
                     }
+                }
+            }
+        }
+      */
+    stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=${KUBECONFIG}
+                        helm upgrade --install ${KUBERNETES_RELEASE} /home/admins/lucht/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
+                    """
+                }
                 }
             }
         }
