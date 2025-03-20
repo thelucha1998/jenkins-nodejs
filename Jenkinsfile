@@ -121,19 +121,20 @@ pipeline {
         */
       }
     }
-    /*
+    
     stage('Deploy to Kubernetes') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh """
-                            helm upgrade --install ${KUBERNETES_RELEASE} /home/admins/lucht/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
+                            helm upgrade --install ${KUBERNETES_RELEASE} /root/jenkins/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
                         """
                     }
                 }
             }
         }
-      */
+      
+    /*
     stage('Deploy to Kubernetes') {
             steps {
                 script {
@@ -146,7 +147,7 @@ pipeline {
                 }
             }
         }
-    
+    */
     // node ("ssh") {
     //   def remote = [:]
     //   remote.name = 'test-kmc01'
