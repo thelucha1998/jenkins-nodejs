@@ -15,6 +15,7 @@ pipeline {
     SONARQUBE_TOKEN = credentials('sonar')
     SONARQUBE_URL = 'http://10.0.230.41:9000/'
     SONARQUBE_PROJECT = 'test-node-js1'
+    KUBERNETES_RELEASE = 'jenkins-nodejs'
     // REGISTRY = 'gitlab-jenkins.opes.com.vn'
     // the project name
     // make sure your robot account have enough access to the project
@@ -120,6 +121,19 @@ pipeline {
         */
       }
     }
+    stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh """
+                            // kubectl set image deployment/${IMAGE_NAME} ${IMAGE_NAME}=${IMAGE_TAG} -n ${NAMESPACE}
+                            // kubectl rollout status deployment/${IMAGE_NAME} -n ${NAMESPACE}
+                            helm upgrade --install ${KUBERNETES_RELEASE} ./jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
+                        """
+                    }
+                }
+            }
+        }
     
     // node ("ssh") {
     //   def remote = [:]
