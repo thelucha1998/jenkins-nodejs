@@ -127,7 +127,7 @@ pipeline {
                 script {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh """
-                            helm upgrade --install ${KUBERNETES_RELEASE} /root/jenkins/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
+                            helm upgrade --install ${KUBERNETES_RELEASE} /var/lib/jenkins/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
                         """
                     }
                 }
