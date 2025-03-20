@@ -53,13 +53,13 @@ pipeline {
        // sh 'sonar-scanner'
         withCredentials([string(credentialsId: 'sonar', variable: 'SONARQUBE_TOKEN')]) {
        sh ''' 
-                        /opt/sonar-scanner/bin/sonar-scanner -X \
-                        -Dsonar.projectKey=$GIT_REPONAME \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=$SONARQUBE_URL \
-                        -Dsonar.login=$SONARQUBE_TOKEN \
-                        -Dsonar.qualitygate.wait=true
-                    '''
+          /opt/sonar-scanner/bin/sonar-scanner -X \
+          -Dsonar.projectKey=$GIT_REPONAME \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=$SONARQUBE_URL \
+          -Dsonar.login=$SONARQUBE_TOKEN \
+          -Dsonar.qualitygate.wait=true
+        '''
         }
        }
       }
