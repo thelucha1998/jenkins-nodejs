@@ -16,7 +16,7 @@ pipeline {
     SONARQUBE_URL = 'http://10.0.230.41:9000/'
     SONARQUBE_PROJECT = 'test-node-js1'
     KUBERNETES_RELEASE = 'jenkins-nodejs'
-    // REGISTRY = 'gitlab-jenkins.opes.com.vn'
+    // REGISTRY = ''
     // the project name
     // make sure your robot account have enough access to the project
     // HARBOR_NAMESPACE = 'jenkins-harbor'
@@ -108,17 +108,7 @@ pipeline {
       }
       steps {
         sh 'docker push eden266/node-app:${COMMIT_HASH}'
-        // sh 'ssh opes@10.0.10.2'
-        // sh 'hostname'
-        // sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
-        /*
-        script {
-          
-          docker.withRegistry( 'https://gitlab-jenkins.opes.com.vn', registryCredential ) {
-            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$APP_NAME:jenkins-nodejs'
-          }
-        }
-        */
+        
       }
     }
     
@@ -133,54 +123,6 @@ pipeline {
                 }
             }
         }
-      
-    /*
-    stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh """
-                        export KUBECONFIG=${KUBECONFIG}
-                        helm upgrade --install ${KUBERNETES_RELEASE} /home/admins/lucht/jenkins-nodejs/node-app-chart/ -n jenkins --set image.tag=${COMMIT_HASH}
-                    """
-                }
-                }
-            }
-        }
-    */
-    // node ("ssh") {
-    //   def remote = [:]
-    //   remote.name = 'test-kmc01'
-    //   remote.host = '10.0.10.2'
-    //   remote.user = 'opes'
-    //   remote.password = 'Hanoi@123'
-    //   remote.allowAnyHosts = true
-    //   stage('Remote SSH') {
-    //     sshCommand remote: remote, command: "ls -lrt"
-    //     sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
-    //   }
-    // }
-      //stage('Deploy Dev') {
-        
-        //   script {
-              // withCredentials(bindings: [usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_CREDENTIAL_USER', passwordVariable: 'DOCKER_CREDENTIAL_PSW')]) {
-              //   sh 'kubectl delete secret regcred --ignore-not-found'
-              //   sh 'kubectl create secret docker-registry regcred'
-              // }
-              // sh "helm upgrade --set image.tag=${commitId} --install --wait dev-example-service ./chart --namespace example-dev"
-        //steps{
-        // script {
-        //    sshagent(credentials : ['my-ssh-key']) {
-        //        sh 'ssh -o StrictHostKeyChecking=no -i my-ssh-key opes@10.0.10.2 "hostname && cd node-git-to-k8s && helm upgrade --install jenkins-nodejs-v5 ./node-app-chart"'
-                // sh 'ssh -v opes@10.0.10.2'
-                // sh 'scp ./test opes@10.0.10.2:/home/opes'
-                // sh "helm upgrade --install jenkins-nodejs ./node-app-chart"
-        //    }
-        //  }
-        //}
-         
-        
-      //}
       
   }
   post {
