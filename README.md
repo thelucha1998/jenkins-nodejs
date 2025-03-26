@@ -23,4 +23,4 @@ The [Jenkinsfile](Jenkinsfile) has a very basic pipeline for
 
 3. Step 3 (Deploy)
     - Helm install demo app
-    - Show deployment statuss
+    - Show deployment status
