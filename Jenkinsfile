@@ -13,7 +13,7 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     SONARQUBE_TOKEN = credentials('sonar')
-    SONARQUBE_URL = 'http://10.0.230.41:9000/'
+    SONARQUBE_URL = 'http://116.100.88.114:9000/'
     SONARQUBE_PROJECT = 'test-node-js1'
     KUBERNETES_RELEASE = 'jenkins-nodejs'
     // REGISTRY = ''
