@@ -16,7 +16,7 @@ pipeline {
     SONARQUBE_URL = 'http://116.100.88.114:9000/'
     SONARQUBE_PROJECT = 'test-node-js1'
     KUBERNETES_RELEASE = 'jenkins-nodejs'
-    // REGISTRY = ''
+    // REGISTRY = 'a'
     // the project name
     // make sure your robot account have enough access to the project
     // HARBOR_NAMESPACE = 'jenkins-harbor'
